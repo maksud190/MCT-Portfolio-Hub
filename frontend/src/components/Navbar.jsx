@@ -40,7 +40,7 @@ export default function Navbar() {
     <nav className="sticky top-0 flex justify-between items-center p-4 bg-white shadow-md z-50 transition-colors duration-300">
       <Link 
         to="/" 
-        className="font-bold text-xl px-4 py-2 rounded-lg bg-amber-100 dark:bg-amber-600 text-blue-600 dark:text-white hover:bg-amber-200 dark:hover:bg-amber-700 transition-all duration-200"
+        className="font-bold text-xl px-4 py-2 rounded-lg  dark:bg-blue-200 text-black dark:text-white hover:bg-amber-200 dark:hover:bg-amber-700 transition-all duration-200"
       >
         MCT-Portfolio-Hub
       </Link>
