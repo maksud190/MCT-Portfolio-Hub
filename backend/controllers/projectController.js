@@ -83,7 +83,36 @@ export const getUserProjects = async (req, res) => {
   }
 };
 
-// 🔥 Get single project with all images
+
+
+
+// ... existing imports and functions ...
+
+// 🔥 Increment view count
+export const incrementView = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    // 🔥 Increment view count
+    project.views = (project.views || 0) + 1;
+    await project.save();
+
+    res.json({ 
+      message: "View counted", 
+      views: project.views 
+    });
+  } catch (err) {
+    console.error("❌ View increment error:", err.message);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// 🔥 Get single project with all images - Updated
 export const getProjectById = async (req, res) => {
   try {
     const { projectId } = req.params;
@@ -100,6 +129,36 @@ export const getProjectById = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// ... rest of the existing functions ...
+
+
+
+
+// 🔥 Get single project with all images
+// export const getProjectById = async (req, res) => {
+//   try {
+//     const { projectId } = req.params;
+//     const project = await Project.findById(projectId)
+//       .populate("userId", "username email avatar");
+    
+//     if (!project) {
+//       return res.status(404).json({ message: "Project not found" });
+//     }
+    
+//     res.json(project);
+//   } catch (err) {
+//     console.error("❌ Get project by ID error:", err.message);
+//     res.status(500).json({ message: err.message });
+//   }
+// };
+
+
+
+
+
+
+
 
 // 🔥 Update project - FIXED
 // 🔥 Update project - FIXED with separate thumbnail handling
@@ -273,3 +332,6 @@ export const checkLikeStatus = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
+

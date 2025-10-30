@@ -176,12 +176,17 @@ export default function Upload() {
         navigate("/profile");
       }, 1000);
       
-    } catch (err) {
+    } 
+    
+    catch (err) {
       console.error("Upload error:", err);
       alert(err.response?.data?.message || "Upload failed. Please try again.");
-    } finally {
+    }
+    
+    finally {
       setLoading(false);
     }
+    
   };
 
   return (

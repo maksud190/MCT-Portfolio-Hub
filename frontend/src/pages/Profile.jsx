@@ -1,72 +1,11 @@
 
-// import { useEffect, useState } from "react";
-// import { API } from "../api/api";
-// import { useAuth } from "../context/AuthContext";
-// import ProjectCard from "../components/ProjectCard";
-
-// export default function Profile() {
-//   const { user } = useAuth();
-//   const [projects, setProjects] = useState([]);
-
-//   useEffect(() => {
-//     if (user?._id) {
-//       API.get(`/projects/user/${user._id}`)
-//         .then((res) => {
-//           console.log("Fetched projects:", res.data);
-//           setProjects(res.data);
-//         })
-//         .catch((err) => console.error("Error fetching user projects:", err));
-//     }
-//   }, [user]);
-
-//   return (
-//     <div className="p-6">
-//       {/* 🔥 User Info Section */}
-//       <div className="text-center mb-8">
-//         <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
-//           {user.username}
-//         </h2>
-//         <p className="text-gray-600 dark:text-gray-400">{user.email}</p>
-//         <p className="text-gray-500 dark:text-gray-500 mt-2">
-//           {user.bio || "No bio yet."}
-//         </p>
-//       </div>
-
-//       <h3 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">
-//         Your Projects ({projects.length})
-//       </h3>
-
-//       {projects.length > 0 ? (
-//         // 🔥 Masonry layout - CSS columns দিয়ে Pinterest style
-//         <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
-//           {/* {projects.map((p) => (
-//             // 🔥 break-inside-avoid - cards কে column break থেকে prevent করে
-//             <div key={p._id} className="break-inside-avoid mb-4">
-//               <ProjectCard project={p} />
-//             </div>
-//           ))} */}
-
-//             {projects.map((p) => (
-//                 <ProjectCard key={p._id} project={p} />
-//               ))}
-
-//         </div>
-//       ) : (
-//         <p className="text-gray-500 dark:text-gray-400 text-center">
-//           You haven't uploaded any projects yet.
-//         </p>
-//       )}
-//     </div>
-//   );
-// }
-
-
 
 import { useEffect, useState } from "react";
 import { API } from "../api/api";
 import { useAuth } from "../context/AuthContext";
 import ProjectCard from "../components/ProjectCard";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast"; // 🔥 Import
 
 export default function Profile() {
   const { user } = useAuth();
@@ -90,23 +29,34 @@ export default function Profile() {
   };
 
   // 🔥 Delete confirmation এবং delete করা
+  // 🔥 Delete with toast
   const handleDelete = async (projectId, projectTitle) => {
-    // 🔥 Confirmation dialog with project title
     const isConfirmed = window.confirm(
-      `⚠️ Delete Project?\n\n"${projectTitle}"\n\nThis action cannot be undone. Are you sure you want to delete this project?`
+      `⚠️ Delete Project?\n\n"${projectTitle}"\n\nThis action cannot be undone. Are you sure?`
     );
 
-    if (!isConfirmed) return; // User cancel করলে return
+    if (!isConfirmed) return;
+
+    // 🔥 Loading toast
+    const loadingToast = toast.loading("Deleting project...");
 
     try {
       await API.delete(`/projects/${projectId}`);
-      alert("✅ Project deleted successfully!");
       
-      // 🔥 UI থেকে deleted project remove করা
+      // 🔥 Success toast
+      toast.success("Project deleted successfully!", {
+        id: loadingToast,
+      });
+      
       setProjects(projects.filter((p) => p._id !== projectId));
     } catch (err) {
       console.error("Error deleting project:", err);
-      alert("❌ " + (err.response?.data?.message || "Failed to delete project"));
+      
+      // 🔥 Error toast
+      toast.error(
+        err.response?.data?.message || "Failed to delete project",
+        { id: loadingToast }
+      );
     }
   };
 
@@ -182,3 +132,5 @@ export default function Profile() {
     </div>
   );
 }
+
+

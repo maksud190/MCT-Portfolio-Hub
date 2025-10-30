@@ -37,7 +37,8 @@ const projectSchema = new mongoose.Schema(
     thumbnail: { type: String, required: true },
     images: [{ type: String }],
     likes: { type: Number, default: 0 },
-    likedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // ✅ Track করবে কে like দিয়েছে
+    likedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    views: { type: Number, default: 0 }, // 🔥 View count field
     comments: [
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -46,7 +47,7 @@ const projectSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true } // 🔥 createdAt and updatedAt automatically added
 );
 
 export default mongoose.model("Project", projectSchema);

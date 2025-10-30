@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast"; // 🔥 Import
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -33,6 +34,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     logout();
+    toast.success("Logged out successfully!");
     navigate("/login");
   };
 
@@ -97,3 +99,5 @@ export default function Navbar() {
     </nav>
   );
 }
+
+
