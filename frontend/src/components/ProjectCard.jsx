@@ -166,26 +166,26 @@ export default function ProjectCard({ project }) {
 
           {/* Footer with category and like button */}
           <div className="flex items-center justify-between">
-            <span className="text-xs rounded-sm font-extralight text-blue-200 dark:text-amber-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1">
+            <span className="text-xs rounded-sm font-extralight text-blue-200 mr-2 dark:text-amber-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1">
               {project.category}
             </span>
 
             {/* Like Button */}
-            <button
+            <span
               onClick={handleLike}
               disabled={loading || !user}
-              className={`flex items-center gap-1 px-2 py-1 rounded-sm text-sm font-medium transition-all ${
+              className={`flex items-center gap-1 px-3 py-1 rounded-sm transition-all ${
                 isLiked
                   ? "bg-red-100 dark:bg-red-900/30 text-red-500"
                   : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500"
               } ${loading ? "opacity-50 cursor-not-allowed" : ""} ${!user ? "cursor-not-allowed opacity-70" : ""}`}
               title={!user ? "Login to like" : isLiked ? "Unlike" : "Like"}
             >
-              <span className={`text-base transition-transform ${isLiked ? "scale-110" : ""}`}>
+              <span className={`text-base transition-transform ${isLiked ? "scale-90" : ""}`}>
                 {isLiked ? "❤️" : "🤍"}
               </span>
               <span>{likes}</span>
-            </button>
+            </span>
           </div>
         </div>
       </div>
