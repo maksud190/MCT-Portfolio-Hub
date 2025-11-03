@@ -6,8 +6,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import ProfileSettings from "./pages/ProfileSettings";
-import ProjectDetail from "./pages/ProjectDetail"; // ✅
-import EditProject from "./pages/EditProject"; // ✅
+import ProjectDetail from "./pages/ProjectDetail";
+import EditProject from "./pages/EditProject";
+import Settings from "./pages/Settings"; // ✅ Import
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 
@@ -41,6 +42,15 @@ function App() {
           element={
             <ProtectedRoute>
               <ProfileSettings />
+            </ProtectedRoute>
+          }
+        />
+        {/* ✅ ADD THIS ROUTE */}
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>
           }
         />

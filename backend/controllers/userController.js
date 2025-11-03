@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import cloudinary from "../config/cloudinary.js";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import Project from "../models/projectModel.js";
 
 // ✅ Register
 export const register = async (req, res) => {
@@ -88,6 +89,12 @@ export const getUserById = async (req, res) => {
 };
 
 // ✅ Update user profile (authenticated)
+// backend/controllers/userController.js
+
+// Update the existing updateUserProfile function to handle socialLinks:
+
+// backend/controllers/userController.js
+
 export const updateUserProfile = async (req, res) => {
   try {
     const userId = req.userId;
@@ -97,9 +104,7 @@ export const updateUserProfile = async (req, res) => {
       userId,
       username,
       hasFile: !!req.file,
-      fileName: req.file?.originalname,
-      fileSize: req.file?.size,
-      filePath: req.file?.path
+      body: req.body, // ✅ Log full body
     });
 
     const user = await User.findById(userId);
@@ -114,6 +119,29 @@ export const updateUserProfile = async (req, res) => {
     if (batch !== undefined) user.batch = batch;
     if (batchAdvisor !== undefined) user.batchAdvisor = batchAdvisor;
     if (batchMentor !== undefined) user.batchMentor = batchMentor;
+    
+    // ✅ Handle social links - Parse from JSON string
+    if (req.body.socialLinks) {
+      try {
+        const parsedSocialLinks = typeof req.body.socialLinks === 'string' 
+          ? JSON.parse(req.body.socialLinks) 
+          : req.body.socialLinks;
+        
+        console.log("🔗 Parsed social links:", parsedSocialLinks);
+        
+        user.socialLinks = {
+          linkedin: parsedSocialLinks.linkedin || "",
+          github: parsedSocialLinks.github || "",
+          behance: parsedSocialLinks.behance || "",
+          portfolio: parsedSocialLinks.portfolio || "",
+          twitter: parsedSocialLinks.twitter || "",
+          instagram: parsedSocialLinks.instagram || "",
+          facebook: parsedSocialLinks.facebook || "",
+        };
+      } catch (parseError) {
+        console.error("❌ Failed to parse social links:", parseError);
+      }
+    }
 
     // Handle avatar upload
     if (req.file) {
@@ -141,6 +169,8 @@ export const updateUserProfile = async (req, res) => {
 
     await user.save();
 
+    console.log("✅ User saved with social links:", user.socialLinks);
+
     const updatedUser = {
       _id: user._id,
       username: user.username,
@@ -151,9 +181,21 @@ export const updateUserProfile = async (req, res) => {
       batch: user.batch,
       batchAdvisor: user.batchAdvisor,
       batchMentor: user.batchMentor,
+      socialLinks: user.socialLinks || {
+        linkedin: "",
+        github: "",
+        behance: "",
+        portfolio: "",
+        twitter: "",
+        instagram: "",
+        facebook: "",
+      },
+      isAvailableForHire: user.isAvailableForHire,
+      hourlyRate: user.hourlyRate,
     };
 
     console.log("✅ Profile updated successfully");
+    console.log("📤 Sending response with social links:", updatedUser.socialLinks);
 
     res.json({ 
       message: "Profile updated successfully", 
@@ -437,6 +479,205 @@ export const sendContactMessage = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
+
+
+
+
+// 🔥 Feature 5: Update Profile Settings
+export const updateSettings = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { bio, socialLinks, skills, isAvailableForHire, hourlyRate } = req.body;
+
+    console.log("📝 Update settings request:", {
+      userId,
+      hasCoverPhoto: !!req.file,
+    });
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update basic fields
+    if (bio !== undefined) user.bio = bio;
+    if (isAvailableForHire !== undefined) user.isAvailableForHire = isAvailableForHire;
+    if (hourlyRate !== undefined) user.hourlyRate = hourlyRate;
+
+    // Update social links
+    if (socialLinks) {
+      const links = typeof socialLinks === 'string' ? JSON.parse(socialLinks) : socialLinks;
+      user.socialLinks = {
+        linkedin: links.linkedin || "",
+        github: links.github || "",
+        behance: links.behance || "",
+        portfolio: links.portfolio || "",
+        twitter: links.twitter || "",
+        instagram: links.instagram || "",
+      };
+    }
+
+    // Update skills
+    if (skills) {
+      const skillsArray = typeof skills === 'string' ? JSON.parse(skills) : skills;
+      user.skills = skillsArray;
+    }
+
+    // Handle cover photo upload
+    if (req.file) {
+      console.log("📁 Uploading cover photo to Cloudinary...");
+      
+      try {
+        const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+          folder: "cover-photos",
+          transformation: [
+            { width: 1200, height: 400, crop: "fill" },
+            { quality: "auto" }
+          ]
+        });
+        
+        user.coverPhoto = uploadResult.secure_url;
+        console.log("✅ Cover photo uploaded:", uploadResult.secure_url);
+      } catch (uploadError) {
+        console.error("❌ Cloudinary upload error:", uploadError);
+        return res.status(500).json({ 
+          message: "Failed to upload cover photo",
+          error: uploadError.message 
+        });
+      }
+    }
+
+    await user.save();
+
+    const updatedUser = {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      avatar: user.avatar || "",
+      bio: user.bio,
+      coverPhoto: user.coverPhoto,
+      socialLinks: user.socialLinks,
+      skills: user.skills,
+      isAvailableForHire: user.isAvailableForHire,
+      hourlyRate: user.hourlyRate,
+      studentId: user.studentId,
+      batch: user.batch,
+      batchAdvisor: user.batchAdvisor,
+      batchMentor: user.batchMentor,
+    };
+
+    console.log("✅ Settings updated successfully");
+
+    res.json({ 
+      message: "Settings updated successfully", 
+      user: updatedUser 
+    });
+  } catch (err) {
+    console.error("❌ Update settings error:", err.message);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+
+
+// backend/controllers/userController.js
+
+// Add these NEW functions at the end of the file:
+
+// 🔥 Update Account (Username & Password)
+export const updateAccount = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { username, currentPassword, newPassword } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update username
+    if (username) {
+      user.username = username;
+    }
+
+    // Update password if provided
+    if (newPassword) {
+      if (!currentPassword) {
+        return res.status(400).json({ message: "Current password is required" });
+      }
+
+      // Verify current password
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: "Current password is incorrect" });
+      }
+
+      // Hash new password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;
+    }
+
+    await user.save();
+
+    res.json({ 
+      message: "Account updated successfully",
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+      }
+    });
+  } catch (err) {
+    console.error("Update account error:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// 🔥 Update Social Links
+export const updateSocialLinks = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { socialLinks } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.socialLinks = socialLinks;
+    await user.save();
+
+    res.json({ 
+      message: "Social links updated successfully",
+      socialLinks: user.socialLinks
+    });
+  } catch (err) {
+    console.error("Update social links error:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// 🔥 Delete Account
+export const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    // Delete user's projects first
+    await Project.deleteMany({ userId });
+
+    // Delete user
+    await User.findByIdAndDelete(userId);
+
+    res.json({ message: "Account deleted successfully" });
+  } catch (err) {
+    console.error("Delete account error:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
 
 
 

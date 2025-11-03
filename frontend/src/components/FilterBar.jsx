@@ -1,7 +1,3 @@
-
-
-
-
 export default function FilterBar({
   categories = [], // Default empty array
   selectedCategory,
@@ -49,7 +45,7 @@ export default function FilterBar({
             onChange={(e) => setSortBy(e.target.value)}
             className="w-full sm:w-52 p-2 border border-gray-300 dark:border-gray-600 rounded-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white hover:border-amber-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-400 transition-colors cursor-pointer"
           >
-            <option value="random">🎲 Random</option>
+            <option value="random">🎲 Default</option>
             <option value="latest">📅 Latest First</option>
             <option value="oldest">📅 Oldest First</option>
             <option value="likes-high">❤️ Most Liked</option>

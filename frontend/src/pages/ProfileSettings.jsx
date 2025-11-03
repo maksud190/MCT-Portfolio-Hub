@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // ✅ Add useEffect
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { API } from "../api/api";
@@ -23,7 +23,18 @@ export default function ProfileSettings() {
   const [avatarPreview, setAvatarPreview] = useState(user?.avatar || null);
   const [loading, setLoading] = useState(false);
 
-  // 🔥 Image crop states - Fixed initialization
+  // ✅ Add social links state
+  const [socialLinks, setSocialLinks] = useState({
+    linkedin: "",
+    github: "",
+    behance: "",
+    portfolio: "",
+    twitter: "",
+    instagram: "",
+    facebook: "",
+  });
+
+  // Image crop states
   const [showCropper, setShowCropper] = useState(false);
   const [imageToCrop, setImageToCrop] = useState(null);
   const [crop, setCrop] = useState({
@@ -36,6 +47,35 @@ export default function ProfileSettings() {
   });
   const [completedCrop, setCompletedCrop] = useState(null);
   const [imageRef, setImageRef] = useState(null);
+
+  // ✅ Load user data including social links
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        username: user.username || "",
+        bio: user.bio || "",
+        studentId: user.studentId || "",
+        batch: user.batch || "",
+        batchAdvisor: user.batchAdvisor || "",
+        batchMentor: user.batchMentor || "",
+      });
+
+      setAvatarPreview(user.avatar || null);
+
+      // ✅ Load social links
+      setSocialLinks(
+        user.socialLinks || {
+          linkedin: "",
+          github: "",
+          behance: "",
+          portfolio: "",
+          twitter: "",
+          instagram: "",
+          facebook: "",
+        }
+      );
+    }
+  }, [user]);
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -55,7 +95,6 @@ export default function ProfileSettings() {
     reader.onloadend = () => {
       setImageToCrop(reader.result);
       setShowCropper(true);
-      // Reset crop to default
       setCrop({
         unit: "%",
         width: 50,
@@ -77,7 +116,7 @@ export default function ProfileSettings() {
     const canvas = document.createElement("canvas");
     const scaleX = imageRef.naturalWidth / imageRef.width;
     const scaleY = imageRef.naturalHeight / imageRef.height;
-    
+
     canvas.width = completedCrop.width;
     canvas.height = completedCrop.height;
     const ctx = canvas.getContext("2d");
@@ -95,15 +134,19 @@ export default function ProfileSettings() {
     );
 
     return new Promise((resolve) => {
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          toast.error("Failed to crop image");
-          resolve(null);
-          return;
-        }
-        const file = new File([blob], "avatar.jpg", { type: "image/jpeg" });
-        resolve(file);
-      }, "image/jpeg", 0.95);
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            toast.error("Failed to crop image");
+            resolve(null);
+            return;
+          }
+          const file = new File([blob], "avatar.jpg", { type: "image/jpeg" });
+          resolve(file);
+        },
+        "image/jpeg",
+        0.95
+      );
     });
   };
 
@@ -111,7 +154,7 @@ export default function ProfileSettings() {
     const croppedFile = await getCroppedImg();
     if (croppedFile) {
       setAvatar(croppedFile);
-      
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setAvatarPreview(reader.result);
@@ -137,17 +180,18 @@ export default function ProfileSettings() {
       form.append("batchAdvisor", formData.batchAdvisor);
       form.append("batchMentor", formData.batchMentor);
 
+      // ✅ Add social links
+      form.append("socialLinks", JSON.stringify(socialLinks));
+
       if (avatar) {
         console.log("📤 Uploading avatar:", avatar);
         form.append("avatar", avatar);
-      } else {
-        console.log("⚠️ No avatar file to upload");
       }
 
       const token = localStorage.getItem("token");
-      
+
       console.log("📤 Sending update request...");
-      
+
       const res = await API.put("/users/profile", form, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -156,13 +200,6 @@ export default function ProfileSettings() {
       });
 
       console.log("✅ Response received:", res.data);
-
-      // 🔥 Check if avatar was uploaded
-      if (res.data.user.avatar) {
-        console.log("✅ Avatar URL received:", res.data.user.avatar);
-      } else {
-        console.log("⚠️ No avatar URL in response");
-      }
 
       updateUser(res.data.user);
 
@@ -177,11 +214,8 @@ export default function ProfileSettings() {
       setTimeout(() => {
         navigate("/profile");
       }, 1000);
-      
     } catch (err) {
       console.error("❌ Update error:", err);
-      console.error("Error response:", err.response?.data);
-      
       toast.error(err.response?.data?.message || "Failed to update profile", {
         id: loadingToast,
       });
@@ -197,14 +231,14 @@ export default function ProfileSettings() {
           Profile Settings
         </h2>
 
-        {/* 🔥 Image Cropper Modal */}
+        {/* Image Cropper Modal */}
         {showCropper && imageToCrop && (
           <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-auto">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                 Crop Profile Picture
               </h3>
-              
+
               <div className="mb-4 flex justify-center">
                 <ReactCrop
                   crop={crop}
@@ -317,7 +351,7 @@ export default function ProfileSettings() {
           </div>
 
           {/* Student Details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Student ID
@@ -380,6 +414,140 @@ export default function ProfileSettings() {
                 disabled={loading}
                 placeholder="Mentor name"
               />
+            </div>
+          </div>
+
+          {/* ✅ Social Links Section */}
+          <div className="mb-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              Social Links
+            </h3>
+
+            <div className="space-y-3">
+              {/* LinkedIn */}
+              <div>
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  🔗 LinkedIn
+                </label>
+                <input
+                  type="url"
+                  value={socialLinks.linkedin || ""}
+                  onChange={(e) =>
+                    setSocialLinks({ ...socialLinks, linkedin: e.target.value })
+                  }
+                  className="w-full p-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  disabled={loading}
+                  placeholder="https://linkedin.com/in/username"
+                />
+              </div>
+
+              {/* GitHub */}
+              <div>
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  💻 GitHub
+                </label>
+                <input
+                  type="url"
+                  value={socialLinks.github || ""}
+                  onChange={(e) =>
+                    setSocialLinks({ ...socialLinks, github: e.target.value })
+                  }
+                  className="w-full p-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  disabled={loading}
+                  placeholder="https://github.com/username"
+                />
+              </div>
+
+              {/* Behance */}
+              <div>
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  🎨 Behance
+                </label>
+                <input
+                  type="url"
+                  value={socialLinks.behance || ""}
+                  onChange={(e) =>
+                    setSocialLinks({ ...socialLinks, behance: e.target.value })
+                  }
+                  className="w-full p-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  disabled={loading}
+                  placeholder="https://behance.net/username"
+                />
+              </div>
+
+              {/* Portfolio */}
+              <div>
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  🌐 Portfolio
+                </label>
+                <input
+                  type="url"
+                  value={socialLinks.portfolio || ""}
+                  onChange={(e) =>
+                    setSocialLinks({
+                      ...socialLinks,
+                      portfolio: e.target.value,
+                    })
+                  }
+                  className="w-full p-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  disabled={loading}
+                  placeholder="https://yourportfolio.com"
+                />
+              </div>
+
+              {/* Twitter */}
+              <div>
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  🐦 Twitter
+                </label>
+                <input
+                  type="url"
+                  value={socialLinks.twitter || ""}
+                  onChange={(e) =>
+                    setSocialLinks({ ...socialLinks, twitter: e.target.value })
+                  }
+                  className="w-full p-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  disabled={loading}
+                  placeholder="https://twitter.com/username"
+                />
+              </div>
+
+              {/* Instagram */}
+              <div>
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  📷 Instagram
+                </label>
+                <input
+                  type="url"
+                  value={socialLinks.instagram || ""}
+                  onChange={(e) =>
+                    setSocialLinks({
+                      ...socialLinks,
+                      instagram: e.target.value,
+                    })
+                  }
+                  className="w-full p-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  disabled={loading}
+                  placeholder="https://instagram.com/username"
+                />
+              </div>
+
+              {/* Facebook */}
+              <div>
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  📘 Facebook
+                </label>
+                <input
+                  type="url"
+                  value={socialLinks.facebook || ""}
+                  onChange={(e) =>
+                    setSocialLinks({ ...socialLinks, facebook: e.target.value })
+                  }
+                  className="w-full p-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  disabled={loading}
+                  placeholder="https://facebook.com/username"
+                />
+              </div>
             </div>
           </div>
 

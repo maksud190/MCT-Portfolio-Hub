@@ -1,3 +1,5 @@
+// backend/routes/userRoutes.js
+
 import express from "express";
 import multer from "multer";
 import { 
@@ -12,7 +14,10 @@ import {
   getNotifications,
   markNotificationRead,
   markAllNotificationsRead,
-  sendContactMessage
+  sendContactMessage,
+  updateAccount,        // ✅ Import
+  updateSocialLinks,    // ✅ Import
+  deleteAccount         // ✅ Import
 } from "../controllers/userController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
@@ -42,6 +47,11 @@ router.get("/:userId", getUserById);
 // ✅ Protected routes
 router.put("/profile", authMiddleware, upload.single('avatar'), updateUserProfile);
 
+// 🔥 Settings routes - ADD THESE
+router.put("/account", authMiddleware, updateAccount);
+router.put("/social-links", authMiddleware, updateSocialLinks);
+router.delete("/account", authMiddleware, deleteAccount);
+
 // 🔥 Feature 18: Email Verification
 router.post("/send-verification-email", authMiddleware, sendVerificationEmail);
 router.get("/verify-email/:token", verifyEmail);
@@ -50,8 +60,8 @@ router.get("/verify-email/:token", verifyEmail);
 router.post("/follow/:targetUserId", authMiddleware, followUser);
 router.get("/follow-status/:targetUserId", authMiddleware, checkFollowStatus);
 
-// 🔥 Feature 4: Notifications - FIX: Move before /:userId route
-router.get("/notifications/all", authMiddleware, getNotifications); // Changed path
+// 🔥 Feature 4: Notifications
+router.get("/notifications/all", authMiddleware, getNotifications);
 router.put("/notifications/:notificationId/read", authMiddleware, markNotificationRead);
 router.put("/notifications/read-all", authMiddleware, markAllNotificationsRead);
 
