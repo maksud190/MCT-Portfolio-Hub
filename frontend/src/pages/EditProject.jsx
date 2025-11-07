@@ -3,7 +3,7 @@ import { API } from "../api/api";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 import TagsInput from "../components/TagsInput";
-
+// Edit Project Page component
 export default function EditProject() {
   const { projectId } = useParams();
   const [data, setData] = useState({
