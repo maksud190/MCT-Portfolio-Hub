@@ -64,7 +64,7 @@ export default function Profile() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* User Info Card */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+      <div className="bg-stone-900 rounded-sm shadow-md p-6 mb-8">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
           {/* Avatar */}
           <div className="flex-shrink-0">
@@ -85,17 +85,17 @@ export default function Profile() {
           <div className="flex-1 text-center md:text-left">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+                <h2 className="text-3xl font-bold text-stone-300 mb-1">
                   {user?.username}
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-stone-400">
                   {user?.email}
                 </p>
               </div>
               {/* Settings Button */}
               <button
                 onClick={() => navigate("/profile/settings")}
-                className="mt-4 md:mt-0 bg-amber-400 hover:bg-amber-400/80 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 mx-auto md:mx-0"
+                className="mt-4 md:mt-0 bg-amber-400/90 hover:bg-amber-400/70 text-white px-4 py-2 !rounded-sm font-medium transition-colors flex items-center gap-2 mx-auto md:mx-0"
               >
                 <svg
                   className="w-5 h-5"
@@ -121,7 +121,7 @@ export default function Profile() {
             </div>
 
             {/* Bio */}
-            <p className="text-gray-700 dark:text-gray-300 mb-4">
+            <p className="text-stone-400 mb-4">
               {user?.bio || "No bio yet."}
             </p>
 
@@ -134,10 +134,10 @@ export default function Profile() {
                       href={user.socialLinks.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors"
+                      className="flex items-center gap-2 px-3 py-1.5 bg-stone-800 hover:bg-stone-950 text-white rounded-sm text-sm transition-colors"
                       title="LinkedIn"
                     >
-                      🔗 LinkedIn
+                      <span className="text-stone-200">🔗 LinkedIn</span>
                     </a>
                   )}
                   {user.socialLinks.github && (
@@ -145,10 +145,10 @@ export default function Profile() {
                       href={user.socialLinks.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-1.5 bg-gray-800 hover:bg-gray-900 text-white rounded-lg text-sm transition-colors"
+                      className="flex items-center gap-2 px-3 py-1.5 bg-stone-800 hover:bg-stone-950 text-white rounded-sm text-sm transition-colors"
                       title="GitHub"
                     >
-                      💻 GitHub
+                      <span className="text-stone-200">💻 GitHub</span>
                     </a>
                   )}
                   {user.socialLinks.behance && (
@@ -156,10 +156,10 @@ export default function Profile() {
                       href={user.socialLinks.behance}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm transition-colors"
+                      className="flex items-center gap-2 px-3 py-1.5 bg-stone-800 hover:bg-stone-950 text-white rounded-sm text-sm transition-colors"
                       title="Behance"
                     >
-                      🎨 Behance
+                      <span className="text-stone-200">🎨 Behance</span>
                     </a>
                   )}
                   {user.socialLinks.portfolio && (
@@ -167,10 +167,10 @@ export default function Profile() {
                       href={user.socialLinks.portfolio}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm transition-colors"
+                      className="flex items-center gap-2 px-3 py-1.5 bg-stone-800 hover:bg-stone-950 text-white rounded-sm text-sm transition-colors"
                       title="Portfolio"
                     >
-                      🌐 Portfolio
+                      <span className="text-stone-200">🌐 Portfolio</span>
                     </a>
                   )}
                   {user.socialLinks.twitter && (
@@ -178,10 +178,10 @@ export default function Profile() {
                       href={user.socialLinks.twitter}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-1.5 bg-sky-500 hover:bg-sky-600 text-white rounded-lg text-sm transition-colors"
+                      className="flex items-center gap-2 px-3 py-1.5 bg-stone-800 hover:bg-stone-950 text-white rounded-sm text-sm transition-colors"
                       title="Twitter"
                     >
-                      🐦 Twitter
+                      <span className="text-stone-200">🐦 Twitter</span>
                     </a>
                   )}
                   {user.socialLinks.instagram && (
@@ -189,10 +189,10 @@ export default function Profile() {
                       href={user.socialLinks.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-1.5 bg-pink-600 hover:bg-pink-700 text-white rounded-lg text-sm transition-colors"
+                      className="flex items-center gap-2 px-3 py-1.5 bg-stone-800 hover:bg-stone-950 text-white rounded-sm text-sm transition-colors"
                       title="Instagram"
                     >
-                      📷 Instagram
+                      <span className="text-stone-200">📷 Instagram</span>
                     </a>
                   )}
                   {user.socialLinks.facebook && (
@@ -200,10 +200,10 @@ export default function Profile() {
                       href={user.socialLinks.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-1.5 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm transition-colors"
+                      className="flex items-center gap-2 px-3 py-1.5 bg-stone-800 hover:bg-stone-950 text-white rounded-sm text-sm transition-colors"
                       title="Facebook"
                     >
-                      📘 Facebook
+                      <span className="text-stone-200">📘 Facebook</span>
                     </a>
                   )}
                 </div>
@@ -211,7 +211,7 @@ export default function Profile() {
 
             {/* Student Details - Only visible to owner */}
             {user?.studentId && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm bg-stone-800 rounded-sm p-4">
                 {user.studentId && (
                   <div>
                     <span className="font-semibold text-gray-600 dark:text-gray-400">

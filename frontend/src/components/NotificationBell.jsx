@@ -148,9 +148,9 @@ export default function NotificationBell() {
             className="fixed inset-0 z-40"
             onClick={() => setShowDropdown(false)}
           ></div>
-          <div className="absolute right-0 mt-2 w-96 bg-white dark:bg-gray-800 rounded-lg shadow-2xl z-50 max-h-[500px] overflow-hidden flex flex-col border border-gray-200 dark:border-gray-700">
+          <div className="absolute right-0 mt-2 w-96 bg-stone-900 rounded-sm shadow-2xl z-50 max-h-[500px] overflow-hidden flex flex-col border border-stone-700">
             {/* Header */}
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+            <div className="p-4 border-b border-stone-700 flex items-center justify-between">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                 Notifications
               </h3>
@@ -171,7 +171,7 @@ export default function NotificationBell() {
                   <div
                     key={notif._id}
                     onClick={() => handleNotificationClick(notif)}
-                    className={`p-4 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors ${
+                    className={`p-4 border-b border-stone-700 hover:bg-gray-50 dark:hover:bg-stone-800 cursor-pointer transition-colors ${
                       !notif.read ? "bg-amber-50 dark:bg-gray-700/50" : ""
                     }`}
                   >

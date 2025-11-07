@@ -107,7 +107,7 @@ export default function ProjectCard({ project }) {
 
   return (
     <Link to={`/project/${project._id}`} className="block group">
-      <div className="bg-white dark:bg-stone-800 rounded-sm shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1">
+      <div className="bg-stone-800/20 rounded-sm shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1">
         {/* Image Section */}
         <div className="relative overflow-hidden bg-gray-200 dark:bg-gray-700">
           {project.thumbnail && !imageError ? (
@@ -122,7 +122,7 @@ export default function ProjectCard({ project }) {
               
               {/* Image count badge */}
               {project.images && project.images.length > 1 && (
-                <div className="absolute top-2 right-2 bg-gray-950/40 text-white text-xs px-2 py-1 rounded-sm flex justify-center items-center gap-1">
+                <div className="absolute top-2 right-2 bg-stone-900/40 text-white text-xs px-2 py-1 rounded-sm flex justify-center items-center gap-1">
                   <span className="pb-1">📷</span>
                   <span>{project.images.length}</span>
                 </div>
@@ -166,7 +166,7 @@ export default function ProjectCard({ project }) {
 
           {/* Footer with category and like button */}
           <div className="flex items-center justify-between">
-            <span className="text-xs rounded-sm font-extralight text-blue-200 mr-2 dark:text-amber-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1">
+            <span className="text-xs rounded-sm font-extralight text-blue-200 mr-2 dark:text-amber-400 bg-stone-900 px-2 py-1">
               {project.category}
             </span>
 
@@ -177,7 +177,7 @@ export default function ProjectCard({ project }) {
               className={`flex items-center gap-1 px-3 py-1 rounded-sm transition-all ${
                 isLiked
                   ? "bg-red-100 dark:bg-red-900/30 text-red-500"
-                  : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500"
+                  : "bg-stone-700 text-stone-300 hover:bg-red-900/20 hover:text-red-500"
               } ${loading ? "opacity-50 cursor-not-allowed" : ""} ${!user ? "cursor-not-allowed opacity-70" : ""}`}
               title={!user ? "Login to like" : isLiked ? "Unlike" : "Like"}
             >

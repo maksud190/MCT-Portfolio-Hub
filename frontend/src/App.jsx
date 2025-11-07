@@ -8,63 +8,66 @@ import Profile from "./pages/Profile";
 import ProfileSettings from "./pages/ProfileSettings";
 import ProjectDetail from "./pages/ProjectDetail";
 import EditProject from "./pages/EditProject";
-import Settings from "./pages/Settings"; // ✅ Import
+import Settings from "./pages/Settings";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer"; // ✅ Import
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-stone-950">
+    <div className="min-h-screen bg-stone-950 flex flex-col">
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/user/:userId" element={<UserProfile />} />
-        <Route path="/project/:projectId" element={<ProjectDetail />} />
-        
-        <Route
-          path="/upload"
-          element={
-            <ProtectedRoute>
-              <Upload />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile/settings"
-          element={
-            <ProtectedRoute>
-              <ProfileSettings />
-            </ProtectedRoute>
-          }
-        />
-        {/* ✅ ADD THIS ROUTE */}
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <Settings />
-            </ProtectedRoute>
-          }
-        />
-        <Route 
-          path="/edit-project/:projectId" 
-          element={
-            <ProtectedRoute>
-              <EditProject />
-            </ProtectedRoute>
-          } 
-        />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/user/:userId" element={<UserProfile />} />
+          <Route path="/project/:projectId" element={<ProjectDetail />} />
+          
+          <Route
+            path="/upload"
+            element={
+              <ProtectedRoute>
+                <Upload />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile/settings"
+            element={
+              <ProtectedRoute>
+                <ProfileSettings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/edit-project/:projectId" 
+            element={
+              <ProtectedRoute>
+                <EditProject />
+              </ProtectedRoute>
+            } 
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </main>
+      <Footer /> {/* ✅ Add Footer */}
     </div>
   );
 }

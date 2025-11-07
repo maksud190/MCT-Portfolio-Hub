@@ -237,8 +237,8 @@ export default function Upload() {
   return (
     <div className="min-h-screen p-6 flex items-center justify-center">
       <div className="w-full max-w-3xl">
-        <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
-          <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">
+        <form onSubmit={handleSubmit} className="bg-stone-900 p-8 rounded-xl shadow-lg">
+          <h2 className="text-2xl font-bold mb-6 text-white text-center">
             Upload New Project
           </h2>
 
@@ -252,7 +252,7 @@ export default function Upload() {
                 <img 
                   src={thumbnailPreview} 
                   alt="Thumbnail" 
-                  className="w-full h-64 object-cover rounded-lg"
+                  className="w-full h-64 object-cover rounded-sm"
                 />
                 <span className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-3 py-1 rounded-full">
                   Thumbnail
