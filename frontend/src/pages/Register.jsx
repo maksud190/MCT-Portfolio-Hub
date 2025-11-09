@@ -82,7 +82,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-stone-950 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
@@ -92,14 +92,14 @@ export default function Register() {
           <h2 className="mt-6 text-4xl font-extrabold text-gray-900 dark:text-white">
             Join Us Today!
           </h2>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-2 text-sm text-stone-400">
             Create your account and start showcasing your work
           </p>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 space-y-6 border border-gray-100 dark:border-gray-700">
+          <div className="bg-stone-900 rounded-2xl shadow-2xl p-8 space-y-6 border border-gray-100 dark:border-gray-700">
             {/* Username Input */}
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -107,7 +107,7 @@ export default function Register() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-5 w-5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </div>
@@ -115,7 +115,7 @@ export default function Register() {
                   id="username"
                   type="text"
                   placeholder="Choose a username"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 border border-stone-600 rounded-sm bg-stone-700  text-white focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all"
                   value={form.username}
                   onChange={(e) => setForm({ ...form, username: e.target.value })}
                   required
@@ -131,7 +131,7 @@ export default function Register() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-5 w-5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                   </svg>
                 </div>
@@ -139,7 +139,7 @@ export default function Register() {
                   id="email"
                   type="email"
                   placeholder="your@email.com"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 border border-stone-600 rounded-sm bg-stone-700  text-white focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   required
@@ -155,7 +155,7 @@ export default function Register() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-5 w-5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                 </div>
@@ -163,7 +163,7 @@ export default function Register() {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Create a strong password"
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 border border-stone-600 rounded-sm bg-stone-700  text-white focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all"
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
                   required
@@ -173,7 +173,7 @@ export default function Register() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-stone-400 hover:text-gray-600 dark:hover:text-gray-300"
                 >
                   {showPassword ? (
                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -229,7 +229,7 @@ export default function Register() {
 
           {/* Login Link */}
           <div className="text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-stone-400">
               Already have an account?{" "}
               <Link
                 to="/login"
