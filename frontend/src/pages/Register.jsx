@@ -99,7 +99,7 @@ export default function Register() {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-          <div className="bg-stone-900 rounded-2xl shadow-2xl p-8 space-y-6 border border-gray-100 dark:border-gray-700">
+          <div className="bg-stone-900 rounded-sm shadow-2xl p-8 space-y-6 border border-gray-100 dark:border-gray-700">
             {/* Username Input */}
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
