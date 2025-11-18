@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { API } from "../api/api";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import { FaBeer } from "react-icons/fa";
 
 export default function ProjectCard({ project }) {
   const [likes, setLikes] = useState(project.likes || 0);
@@ -107,7 +108,7 @@ export default function ProjectCard({ project }) {
 
   return (
     <Link to={`/project/${project._id}`} className="block group">
-      <div className="bg-stone-800/20 rounded-sm shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1">
+      <div className="bg-white rounded-sm shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1">
         {/* Image Section */}
         <div className="relative overflow-hidden bg-gray-200 dark:bg-gray-700">
           {project.thumbnail && !imageError ? (
@@ -115,7 +116,7 @@ export default function ProjectCard({ project }) {
               <img
                 src={project.thumbnail}
                 alt={project.title}
-                className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+                className="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-105"
                 loading="lazy"
                 onError={() => setImageError(true)}
               />
@@ -138,37 +139,40 @@ export default function ProjectCard({ project }) {
         </div>
 
         {/* Content Section */}
-        <div className="px-4 py-2.5">
-          <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-1.5 line-clamp-2">
+        <div className="px-4 pt-2 pb-0 mb-0">
+          <h3 className="text-lg font-semibold text-stone-900 mb-0.5 line-clamp-2">
             {project.title}
           </h3>
+
+
+          <h4 className="text-sm rounded-sm text-stone-800 font-semibold">
+              {project.userId?.username}
+            </h4>
+
+
 
           {/* Stats Row - Views, Comments, Date */}
           <div className="flex items-center justify-between text-xs font-light text-gray-500 dark:text-gray-400 mb-1.5">
             {/* Views */}
             <div className="flex items-center gap-1">
-              <span>👁️</span>
-              <span>{project.views || 0}</span>
+              <span className="text-lg">👁️</span>
+              <span className="text-stone-600 font-semibold">{project.views || 0}</span>
             </div>
 
             {/* ✅ Comments - Use .length for array */}
             <div className="flex items-center gap-1">
-              <span>💬</span>
-              <span>{project.comments?.length || 0}</span>
+              <span className="text-lg">💬</span>
+              <span className="text-stone-600 font-semibold">{project.comments?.length || 0}</span>
             </div>
 
             {/* Upload Date */}
-            <div className="flex items-center gap-1">
+            {/* <div className="flex items-center gap-1">
               <span>📅</span>
               <span>{formatDate(project.createdAt)}</span>
-            </div>
-          </div>
+            </div> */}
 
-          {/* Footer with category and like button */}
-          <div className="flex items-center justify-between">
-            <span className="text-xs rounded-sm font-extralight text-blue-200 mr-2 dark:text-amber-400 bg-stone-900 px-2 py-1">
-              {project.category}
-            </span>
+
+            
 
             {/* Like Button */}
             <span
@@ -186,7 +190,35 @@ export default function ProjectCard({ project }) {
               </span>
               <span>{likes}</span>
             </span>
+
+
+
+
           </div>
+
+          {/* Footer with category and like button */}
+          {/* <div className="flex items-center justify-between"> */}
+            {/* <span className="text-xs rounded-sm font-extralight text-blue-200 mr-2 dark:text-amber-400 bg-stone-900 px-2 py-1">
+              {project.category}
+            </span> */}
+
+            {/* Like Button */}
+            {/* <span
+              onClick={handleLike}
+              disabled={loading || !user}
+              className={`flex items-center gap-1 px-3 py-1 rounded-sm transition-all ${
+                isLiked
+                  ? "bg-red-100 dark:bg-red-900/30 text-red-500"
+                  : "bg-stone-700 text-stone-300 hover:bg-red-900/20 hover:text-red-500"
+              } ${loading ? "opacity-50 cursor-not-allowed" : ""} ${!user ? "cursor-not-allowed opacity-70" : ""}`}
+              title={!user ? "Login to like" : isLiked ? "Unlike" : "Like"}
+            >
+              <span className={`text-base transition-transform ${isLiked ? "scale-90" : ""}`}>
+                {isLiked ? "❤️" : "🤍"}
+              </span>
+              <span>{likes}</span>
+            </span> */}
+          {/* </div> */}
         </div>
       </div>
     </Link>

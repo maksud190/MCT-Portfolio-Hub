@@ -10,7 +10,7 @@ export default function FilterBar({
   filteredProjects = [] // Default empty array
 }) {
   return (
-    <div className="mb-6 bg-white dark:bg-stone-900 px-4 py-2.5 rounded-sm shadow-md">
+    <div className="mb-6 bg-gray-100 px-4 py-2.5 ml-5 rounded-sm shadow-md border-1 border-stone-400">
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         
         {/* Mobile Category Dropdown */}
