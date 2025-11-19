@@ -1,3 +1,73 @@
+// import mongoose from "mongoose";
+
+// const userSchema = new mongoose.Schema(
+//   {
+//     username: { type: String, required: true },
+//     email: { type: String, required: true, unique: true },
+//     password: { type: String, required: true },
+//     avatar: { type: String, default: "" },
+//     bio: { type: String, default: "" },
+    
+//     // 🔥 Student details
+//     studentId: { type: String, default: "" },
+//     batch: { type: String, default: "" },
+//     idCardImage: { type: String, default: "" },
+//     batchAdvisor: { type: String, default: "" },
+//     batchMentor: { type: String, default: "" },
+    
+//     // 🔥 Profile Customization (Feature 5)
+//     coverPhoto: { type: String, default: "" },
+//     socialLinks: {
+//       linkedin: { type: String, default: "" },
+//       github: { type: String, default: "" },
+//       behance: { type: String, default: "" },
+//       portfolio: { type: String, default: "" },
+//       twitter: { type: String, default: "" },
+//       instagram: { type: String, default: "" },
+//       facebook: { type: String, default: "" },
+//     },
+//     skills: [{ type: String }],
+//     customUrl: { type: String, unique: true, sparse: true },
+    
+//     // 🔥 Follow System (Feature 3)
+//     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+//     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    
+//     // 🔥 Contact/Hire Me (Feature 30)
+//     isAvailableForHire: { type: Boolean, default: false },
+//     hourlyRate: { type: String, default: "" },
+    
+//     // 🔥 Email Verification (Feature 18)
+//     isEmailVerified: { type: Boolean, default: false },
+//     emailVerificationToken: { type: String },
+//     emailVerificationExpires: { type: Date },
+    
+//     // 🔥 Admin & Role
+//     role: { type: String, enum: ["user", "admin"], default: "user" },
+//     isActive: { type: Boolean, default: true },
+    
+//     // 🔥 Notifications (Feature 4)
+//     notifications: [{
+//       type: { type: String, enum: ["like", "comment", "follow", "upload"] },
+//       message: { type: String },
+//       from: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+//       project: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
+//       read: { type: Boolean, default: false },
+//       createdAt: { type: Date, default: Date.now }
+//     }],
+//   },
+//   { timestamps: true }
+// );
+
+// export default mongoose.model("User", userSchema);
+
+
+
+
+
+
+
+
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
@@ -7,6 +77,18 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     avatar: { type: String, default: "" },
     bio: { type: String, default: "" },
+    
+    // 🆕 Role & Designation
+    role: { 
+      type: String, 
+      enum: ["student", "teacher", "admin"], 
+      default: "student" 
+    },
+    designation: { type: String, default: "" },
+    department: { 
+      type: String, 
+      default: "Multimedia and Creative Technology" 
+    },
     
     // 🔥 Student details
     studentId: { type: String, default: "" },
@@ -42,8 +124,7 @@ const userSchema = new mongoose.Schema(
     emailVerificationToken: { type: String },
     emailVerificationExpires: { type: Date },
     
-    // 🔥 Admin & Role
-    role: { type: String, enum: ["user", "admin"], default: "user" },
+    // 🔥 Admin & Status
     isActive: { type: Boolean, default: true },
     
     // 🔥 Notifications (Feature 4)

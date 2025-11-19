@@ -9,7 +9,7 @@ import Project from "../models/projectModel.js";
 // ✅ Register
 export const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, role, designation, department } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -22,6 +22,9 @@ export const register = async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      role: role || "student", // Default to student
+      designation: designation || "",
+      department: department || "Multimedia and Creative Technology",
     });
 
     res.status(201).json({ message: "User registered successfully", user });
@@ -677,6 +680,23 @@ export const deleteAccount = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
+
+// 🔥 Get All Users (for Profiles directory)
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({ isActive: true })
+      .select('username email avatar bio role designation department batch studentId')
+      .sort({ role: -1, username: 1 }); // Teachers first (role: 'teacher' > 'student'), then alphabetically
+    
+    res.json(users);
+  } catch (err) {
+    console.error("Get all users error:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
 
 
 

@@ -15,9 +15,10 @@ import {
   markNotificationRead,
   markAllNotificationsRead,
   sendContactMessage,
-  updateAccount,        // ✅ Import
-  updateSocialLinks,    // ✅ Import
-  deleteAccount         // ✅ Import
+  updateAccount,
+  updateSocialLinks,
+  deleteAccount,
+  getAllUsers  // ✅ Import this
 } from "../controllers/userController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
@@ -39,33 +40,38 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }
 });
 
-// ✅ Public routes
+// ✅ PUBLIC ROUTES
 router.post("/register", register);
 router.post("/login", login);
+
+// ✅ IMPORTANT: Put /all route BEFORE /:userId route
+router.get("/all", getAllUsers);
+
+// ✅ Then specific ID routes
 router.get("/:userId", getUserById);
 
-// ✅ Protected routes
+// ✅ PROTECTED ROUTES
 router.put("/profile", authMiddleware, upload.single('avatar'), updateUserProfile);
 
-// 🔥 Settings routes - ADD THESE
+// Settings routes
 router.put("/account", authMiddleware, updateAccount);
 router.put("/social-links", authMiddleware, updateSocialLinks);
 router.delete("/account", authMiddleware, deleteAccount);
 
-// 🔥 Feature 18: Email Verification
+// Email Verification
 router.post("/send-verification-email", authMiddleware, sendVerificationEmail);
 router.get("/verify-email/:token", verifyEmail);
 
-// 🔥 Feature 3: Follow System
+// Follow System
 router.post("/follow/:targetUserId", authMiddleware, followUser);
 router.get("/follow-status/:targetUserId", authMiddleware, checkFollowStatus);
 
-// 🔥 Feature 4: Notifications
+// Notifications
 router.get("/notifications/all", authMiddleware, getNotifications);
 router.put("/notifications/:notificationId/read", authMiddleware, markNotificationRead);
 router.put("/notifications/read-all", authMiddleware, markAllNotificationsRead);
 
-// 🔥 Feature 30: Contact/Hire Me
+// Contact/Hire Me
 router.post("/contact", authMiddleware, sendContactMessage);
 
 export default router;

@@ -338,16 +338,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-
 import { useEffect, useState } from "react";
 import { API } from "../api/api";
 import { useAuth } from "../context/AuthContext";
@@ -483,6 +473,22 @@ export default function Profile() {
                   {displayUser?.username}
                 </h2>
                 <p className="text-stone-400">{displayUser?.email}</p>
+              </div>
+
+              <div>
+                {displayUser.designation && (
+                  <p className="text-sm text-amber-600 dark:text-amber-400 font-semibold mb-2">
+                    {displayUser.designation}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                {displayUser.department && (
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    📚 {displayUser.department}
+                  </p>
+                )}
               </div>
 
               {/* Settings Button - Only for own profile */}
