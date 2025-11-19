@@ -79,6 +79,13 @@ export default function Profiles() {
             👨‍🏫 Teacher
           </div>
         )}
+
+        {/* Role Badge */}
+        {user.role !== "teacher" && (
+          <div className="absolute top-3 right-3 bg-amber-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-md">
+            🎓 Student
+          </div>
+        )}
       </div>
 
       {/* Info */}
