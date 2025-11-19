@@ -331,20 +331,6 @@ export default function Navbar() {
   // Mobile menu state
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  // useEffect(() => {
-  //   if (dark) {
-  //     document.documentElement.classList.add("dark");
-  //     localStorage.setItem("theme", "dark");
-  //   } else {
-  //     document.documentElement.classList.remove("dark");
-  //     localStorage.setItem("theme", "light");
-  //   }
-  // }, [dark]);
-
-  // const toggleDark = () => {
-  //   setDark(!dark);
-  // };
-
   const handleLogout = () => {
     logout();
     toast.success("Logged out successfully!");
@@ -371,20 +357,18 @@ export default function Navbar() {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Dark Mode Toggle */}
-            {/* <button
-              onClick={toggleDark}
-              className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 text-xl shadow-sm hover:shadow-md transform hover:scale-110"
-              aria-label="Toggle dark mode"
-              title={dark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            >
-              {dark ? "☀️" : "🌙"}
-            </button> */}
             
             {user ? (
               <>
                 {/* Notification Bell */}
                 <NotificationBell />
+
+                {/* 🆕 Image Converter Link */}
+                <Link to="/image-converter">
+                  <span className="font-bold text-stone-800 hover:text-white border-1 hover:border-stone-800/75 hover:bg-stone-800 px-2 py-2 rounded-sm duration-200">
+                    🖼️ Converter
+                  </span>
+                </Link>
 
                 {/* Upload Button */}
                 <Link to="/upload">
@@ -417,19 +401,19 @@ export default function Navbar() {
                   </Link>
 
                   {/* Dropdown Menu */}
-                  <div className="absolute right-0 mt-2 w-48 bg-stone-900 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-slate-700">
+                  <div className="absolute right-0 mt-2 w-48 bg-stone-900 rounded-sm shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-slate-700">
                     <div className="py-2">
                       <Link
                         to="/profile"
                         className="block px-4 py-2 hover:bg-stone-700/40 transition-colors"
                       >
-                        <div className="text-stone-400 hover:text-stone-50">👤 My Profile</div>
+                        <div className="text-stone-300 hover:text-stone-50">👤 My Profile</div>
                       </Link>
                       <Link
                         to="/settings"
                         className="block px-4 py-2 hover:bg-stone-700/40 transition-colors"
                       >
-                        <div className="text-stone-400 hover:text-stone-50">⚙️ Settings</div>
+                        <div className="text-stone-300 hover:text-stone-50">⚙️ Settings</div>
                       </Link>
                       {user.role === "admin" && (
                         <Link
@@ -443,7 +427,7 @@ export default function Navbar() {
                       <hr className="my-2 border-gray-200 dark:border-gray-700" />
                       <button
                         onClick={handleLogout}
-                        className="w-full text-left px-4 py-2 text-red-600 hover:bg-stone-700/40 transition-colors font-bold"
+                        className="w-full text-left px-4 py-2 text-red-600 hover:bg-stone-700/40 transition-colors !font-bold"
                       >
                         🚪 Logout
                       </button>
@@ -453,6 +437,13 @@ export default function Navbar() {
               </>
             ) : (
               <>
+                {/* 🆕 Image Converter Link for non-logged users */}
+                <Link to="/image-converter">
+                  <span className="font-bold text-stone-800 hover:text-white border-1 hover:border-stone-800/75 hover:bg-stone-800 px-2 py-2 rounded-sm duration-200">
+                    🖼️ Converter
+                  </span>
+                </Link>
+
                 <Link to="/login">
                   <span className="font-bold text-gray-800 hover:text-white hover:bg-gray-800/75 px-4 py-3 rounded-sm duration-200">
                     Login
@@ -491,15 +482,8 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {showMobileMenu && (
-        <div className="md:hidden bg-amber-300 dark:bg-gray-800 border-t border-amber-500 dark:border-gray-700">
+        <div className=" bg-amber-300 dark:bg-gray-800 border-t border-amber-500 dark:border-gray-700">
           <div className="px-4 py-3 space-y-2">
-            {/* Dark Mode Toggle */}
-            {/* <button
-              onClick={toggleDark}
-              className="w-full flex items-center gap-2 px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-amber-200 dark:hover:bg-gray-700 rounded-sm transition-colors font-medium"
-            >
-              {dark ? "☀️ Light Mode" : "🌙 Dark Mode"}
-            </button> */}
 
             {user ? (
               <>
@@ -516,7 +500,7 @@ export default function Navbar() {
                       {user.username?.charAt(0).toUpperCase()}
                     </div>
                   )}
-                  <span className="font-bold text-gray-800 dark:text-white">
+                  <span className="font-bold text-stone-800 dark:text-white">
                     {user.username}
                   </span>
                 </div>
@@ -524,10 +508,20 @@ export default function Navbar() {
                 <Link
                   to="/profile"
                   onClick={() => setShowMobileMenu(false)}
-                  className="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-amber-200 dark:hover:bg-gray-700 rounded-sm transition-colors font-medium"
+                  className="block px-4 py-2 text-slate-200 hover:bg-amber-200 dark:hover:bg-gray-700 rounded-sm transition-colors font-medium"
                 >
                   👤 My Profile
                 </Link>
+
+                {/* 🆕 Image Converter Link - Mobile */}
+                <Link
+                  to="/image-converter"
+                  onClick={() => setShowMobileMenu(false)}
+                  className="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-amber-200 dark:hover:bg-gray-700 rounded-sm transition-colors font-medium"
+                >
+                  🖼️ Image Converter
+                </Link>
+
                 <Link
                   to="/upload"
                   onClick={() => setShowMobileMenu(false)}
@@ -560,6 +554,15 @@ export default function Navbar() {
               </>
             ) : (
               <>
+                {/* 🆕 Image Converter Link - Mobile (Non-logged users) */}
+                <Link
+                  to="/image-converter"
+                  onClick={() => setShowMobileMenu(false)}
+                  className="block px-4 py-2 text-gray-800 dark:text-gray-300 hover:bg-amber-200 dark:hover:bg-gray-700 rounded-sm transition-colors font-medium"
+                >
+                  🖼️ Image Converter
+                </Link>
+
                 <Link
                   to="/login"
                   onClick={() => setShowMobileMenu(false)}
