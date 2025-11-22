@@ -53,7 +53,7 @@ export default function SearchBar() {
           part.toLowerCase() === query.toLowerCase() ? (
             <mark
               key={i}
-              className="bg-amber-300 text-stone-900 px-0.5 rounded"
+              className="bg-blue-300 text-stone-800 px-0.5 rounded-sm"
             >
               {part}
             </mark>
@@ -89,7 +89,7 @@ export default function SearchBar() {
           placeholder="Search by title, username, or email..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-2 py-1 pl-10 pr-4 border-gray-300 dark:border-gray-700 rounded-sm border-b-2 hover:border-b-stone-900 text-stone-900 focus:outline-none focus:border-stone-900 transition-all duration-200"
+          className="w-full px-2 py-1 pl-10 pr-4 border-stone-800 rounded-sm border-b-2 hover:border-b-stone-900 text-stone-900 focus:outline-none focus:border-stone-900 transition-all duration-200"
         />
         <svg
           className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-800"
@@ -106,14 +106,14 @@ export default function SearchBar() {
         </svg>
         {isSearching && (
           <div className="absolute right-3 top-1/2 -translate-y-1/2">
-            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-amber-400"></div>
+            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-blue-600"></div>
           </div>
         )}
       </div>
 
       {/* Search Results Dropdown */}
       {showResults && searchResults.length > 0 && (
-        <div className="absolute z-50 w-full mt-2 bg-slate-50 rounded-sm shadow-2xl max-h-96 overflow-y-auto border border-stone-700">
+        <div className="absolute z-50 w-full mt-2 bg-stone-50 rounded-sm shadow-2xl max-h-96 overflow-y-auto border border-stone-700">
           {searchResults.map((project) => {
             const matchType = getMatchType(project);
 
@@ -121,7 +121,7 @@ export default function SearchBar() {
               <div
                 key={project._id}
                 onClick={() => handleResultClick(project._id)}
-                className="flex items-center gap-3 px-3 py-2 hover:bg-slate-200 cursor-pointer transition-colors border-b border-stone-700 last:border-b-0"
+                className="flex items-center gap-3 px-3 py-2 hover:bg-stone-100 cursor-pointer transition-colors border-b border-stone-700 last:border-b-0"
               >
                 <img
                   src={project.thumbnail}
@@ -136,7 +136,7 @@ export default function SearchBar() {
 
                   {/* User Info */}
                   <p className="text-sm text-stone-700">
-                    by {highlightText(project.userId?.username, searchQuery)}
+                    <span className="font-medium">by</span> {highlightText(project.userId?.username, searchQuery)}
                     {project.userId?.email && (
                       <span className="text-xs text-stone-500 ml-1">
                         ({highlightText(project.userId?.email, searchQuery)})
@@ -147,7 +147,7 @@ export default function SearchBar() {
                   {/* Match Type Badge & Stats */}
                   <div className="flex items-center gap-3 text-xs mt-1">
                     {matchType && (
-                      <span className="bg-amber-400 text-stone-900 px-2 py-0.5 rounded text-xs font-medium">
+                      <span className="bg-amber-400 text-stone-900 px-1 py-0.5 rounded-sm text-xs font-medium">
                         Match: {matchType}
                       </span>
                     )}
@@ -170,12 +170,12 @@ export default function SearchBar() {
         searchQuery.length >= 2 &&
         searchResults.length === 0 &&
         !isSearching && (
-          <div className="absolute z-50 w-full mt-2 bg-white dark:bg-gray-800 rounded-sm shadow-xl p-4 text-center border border-gray-200 dark:border-gray-700">
+          <div className="absolute z-50 w-full mt-2 bg-stone-50 rounded-sm shadow-xl p-4 text-center border border-stone-700">
             <div className="text-4xl mb-2">🔍</div>
-            <p className="text-gray-600 dark:text-gray-400 font-medium">
+            <p className="text-stone-700 font-medium">
               No projects found
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+            <p className="text-xs text-stone-500 mt-1">
               Try searching by project title, username, or email
             </p>
           </div>
