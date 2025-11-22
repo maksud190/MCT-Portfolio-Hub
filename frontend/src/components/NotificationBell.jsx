@@ -20,20 +20,21 @@ export default function NotificationBell() {
   }, [user]);
 
   const fetchNotifications = async () => {
-  try {
-    const token = localStorage.getItem("token");
-    const res = await API.get("/users/notifications/all", { // Changed path
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    setNotifications(res.data);
-    setUnreadCount(res.data.filter(n => !n.read).length);
-  } catch (err) {
-    console.error("Fetch notifications error:", err);
-    // Don't show error to user, just log it
-    setNotifications([]);
-    setUnreadCount(0);
-  }
-};
+    try {
+      const token = localStorage.getItem("token");
+      const res = await API.get("/users/notifications/all", {
+        // Changed path
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setNotifications(res.data);
+      setUnreadCount(res.data.filter((n) => !n.read).length);
+    } catch (err) {
+      console.error("Fetch notifications error:", err);
+      // Don't show error to user, just log it
+      setNotifications([]);
+      setUnreadCount(0);
+    }
+  };
 
   const markAsRead = async (notificationId) => {
     try {
@@ -66,7 +67,7 @@ export default function NotificationBell() {
   const handleNotificationClick = (notification) => {
     markAsRead(notification._id);
     setShowDropdown(false);
-    
+
     if (notification.type === "follow") {
       navigate(`/user/${notification.from._id}`);
     } else if (notification.project) {
@@ -79,7 +80,7 @@ export default function NotificationBell() {
     const notifDate = new Date(date);
     const diffTime = Math.abs(now - notifDate);
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    
+
     if (diffDays === 0) {
       const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
       if (diffHours === 0) {
@@ -118,7 +119,7 @@ export default function NotificationBell() {
       {/* Bell Icon */}
       <button
         onClick={() => setShowDropdown(!showDropdown)}
-        className="relative p-2 rounded-full focus:outline-0 text-stone-900 hover:text-stone-700 transition-colors"
+        className="relative px-2 !py-2 !rounded-sm focus:outline-0 text-stone-900 hover:text-stone-700 transition-colors"
       >
         <svg
           className="w-6 h-6"
@@ -135,7 +136,7 @@ export default function NotificationBell() {
         </svg>
         {/* Unread Badge */}
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+          <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs font-bold rounded-sm w-5 h-5 flex items-center justify-center">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
@@ -157,7 +158,7 @@ export default function NotificationBell() {
               {unreadCount > 0 && (
                 <button
                   onClick={markAllAsRead}
-                  className="text-sm text-amber-500 hover:text-amber-600"
+                  className="text-sm text-blue-400"
                 >
                   Mark all as read
                 </button>
@@ -182,10 +183,14 @@ export default function NotificationBell() {
                           <img
                             src={notif.from.avatar}
                             alt={notif.from.username}
-                            className="w-10 h-10 rounded-full"
+                            className="w-10 h-10 rounded-sm border-2
+                           border-stone-500"
                           />
                         ) : (
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold">
+                          <div
+                            className="w-10 h-10 rounded-sm bg-stone-900 border-2
+                           border-stone-500 flex items-center justify-center text-white font-bold"
+                          >
                             {notif.from?.username?.charAt(0).toUpperCase()}
                           </div>
                         )}
@@ -204,7 +209,7 @@ export default function NotificationBell() {
                             {getNotificationIcon(notif.type)}
                           </span>
                         </div>
-                        
+
                         {/* Project Thumbnail */}
                         {notif.project?.thumbnail && (
                           <img
@@ -213,7 +218,7 @@ export default function NotificationBell() {
                             className="mt-2 w-full h-20 object-cover rounded"
                           />
                         )}
-                        
+
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                           {formatDate(notif.createdAt)}
                         </p>
@@ -221,7 +226,7 @@ export default function NotificationBell() {
 
                       {/* Unread Indicator */}
                       {!notif.read && (
-                        <div className="w-2 h-2 bg-amber-500 rounded-full flex-shrink-0 mt-2"></div>
+                        <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 mt-2"></div>
                       )}
                     </div>
                   </div>
